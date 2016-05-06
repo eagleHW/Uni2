@@ -6,44 +6,71 @@
 
 package Controlador;
 
+import DAO.UsuarioDAOImpl;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class LoginController implements BeanFactoryAware {
-
-    private UsuarioJDBCTemplate usuarioJDBCTemplate;
+    
+    private UsuarioDAOImpl usuarioDAOImpl;
     
    @RequestMapping(value = "/")
-   public ModelAndView index(){
-       return new ModelAndView("index", "command", new Login());
+   public String index(){
+       //return new ModelAndView("index", "command", new Login());
+       return "index";
    }
    
-   @RequestMapping(value = "/home", method = RequestMethod.POST)
-   public String home(@ModelAttribute Login login, 
-   ModelMap model) {
+    @RequestMapping(value = "/home")
+    public String home(HttpSession sesion, ModelMap model) {
              
-      model.addAttribute("login", login.getLogin());
-      
-      //usuarioJDBCTemplate.create("prueba2", "prueba2", "prueba2", "prueba2");
-      
+      model.addAttribute("login", sesion.getAttribute("login"));
       return "home";
-   }
+    }
 
+   
+    @RequestMapping(value="/login", method = RequestMethod.POST)
+    public String login(ModelMap model,HttpServletRequest request){
+       
+        String login = request.getParameter("login"); 
+        String password = request.getParameter("password");
+    
+        boolean acceso = usuarioDAOImpl.login(login, password);
+         
+       if(acceso){
+           
+        request.getSession(true).setAttribute("login", login);
+        return "redirect:home";
+
+       }else{
+           
+        model.addAttribute("error", "Login o contraseña incorrecta");
+        return "index";   
+           
+       }
+       
+    }
+      
+    @RequestMapping(value = "/logout")
+    public String logout(HttpSession sesion){
+    
+        sesion.invalidate();
+        return "redirect:/";
+   
+    }
+    
     @Override
     public void setBeanFactory(BeanFactory context) throws BeansException {
     
-      usuarioJDBCTemplate = (UsuarioJDBCTemplate)context.getBean("usuarioJDBCTemplate");
-    
+      usuarioDAOImpl = (UsuarioDAOImpl)context.getBean("usuarioDAOImpl");
         
     }
 

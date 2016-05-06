@@ -4,18 +4,18 @@
  * and open the template in the editor.
  */
 
-package Controlador;
+package DAO;
 
-import javax.sql.DataSource;
+import Modelo.Pregunta;
 
 /**
  *
  * @author rae
  */
-public interface UsuarioDAO {
+public interface PreguntaDAO {
     
-    public void setDataSource(DataSource ds);
-    
-    public void create(String login, String password, String nombre, String correo);
+    public void create(Pregunta pregunta);
+
+    public Pregunta get(int pregunta_id);
     
 }

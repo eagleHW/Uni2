@@ -8,7 +8,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
-
+ 
     
 <bean id="dataSource"
     class="org.springframework.jdbc.datasource.DriverManagerDataSource"
@@ -17,8 +17,41 @@
     p:username="postgres"
     p:password="1008rpdml3"/>
 
-<bean id="usuarioJDBCTemplate" class="Controlador.UsuarioJDBCTemplate">
+<bean id="hibernate4AnnotatedSessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
     <property name="dataSource" ref="dataSource"/>
+    <property name="annotatedClasses">
+        <list>
+            <value>Modelo.Usuario</value>
+            <value>Modelo.Administrador</value>
+            <value>Modelo.Monitor</value>
+            <value>Modelo.Pregunta</value>
+            <value>Modelo.Respuesta</value>
+            <value>Modelo.Calificacion</value>
+        </list>
+    </property>
+    <property name="hibernateProperties">
+        <props>
+            <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
+            <prop key="hibernate.show_sql">false</prop>
+            <prop key="hibernate.format_sql">false</prop>
+        </props>
+    </property>    
+        
+        
+        
+</bean>
+
+
+<bean id="usuarioDAOImpl" class="DAO.UsuarioDAOImpl">
+    <property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory"/>
+</bean>
+
+<bean id="administradorDAOImpl" class="DAO.AdministradorDAOImpl">
+    <property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory"/>
+</bean>
+
+<bean id="preguntaDAOImpl" class="DAO.PreguntaDAOImpl">
+    <property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory"/>
 </bean>
 
 </beans>
