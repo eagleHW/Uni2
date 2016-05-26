@@ -6,10 +6,18 @@
 
 package Modelo;
 
+import java.io.Serializable;
 import java.math.BigInteger;
+import java.util.LinkedList;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -18,7 +26,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="Usuario")
-public class Usuario{
+public class Usuario implements Serializable{
 
     @Id @Column(name="Nombre_usuario")
     private String login;
@@ -50,8 +58,25 @@ public class Usuario{
     @Column(name="Bloqueado")
     private int bloqueado;
     
-    @Column(name="CarreraIDCarrera")
-    private int id_carrera;
+    @ManyToOne
+    @JoinColumn(name="CarreraIDCarrera")
+    private Carrera carrera;
+
+    @OneToMany(mappedBy="login")
+    private List<Pregunta> preguntas = new LinkedList<Pregunta>(); 
+
+    @OneToMany(mappedBy="login")
+    private List<Respuesta> respuestas = new LinkedList<Respuesta>(); 
+    
+    // Cuidado con que se cierre la sesion antes de obtener los datos
+    //http://stackoverflow.com/questions/21944868/failed-to-lazily-initialize-a-collection-due-to-no-session
+    @OneToOne(mappedBy="login", fetch=FetchType.LAZY)
+    private Monitor monitor;
+    
+    // Cuidado con que se cierre la sesion antes de obtener los datos
+    //http://stackoverflow.com/questions/21944868/failed-to-lazily-initialize-a-collection-due-to-no-session
+    @OneToOne(mappedBy="login", fetch=FetchType.LAZY)
+    private Administrador administrador;
 
     public String getLogin() {
         return login;
@@ -93,8 +118,24 @@ public class Usuario{
         return bloqueado;
     }
 
-    public int getId_carrera() {
-        return id_carrera;
+    public Carrera getCarrera() {
+        return carrera;
+    }
+
+    public List<Pregunta> getPreguntas() {
+        return preguntas;
+    }
+
+    public List<Respuesta> getRespuestas() {
+        return respuestas;
+    }
+
+    public Monitor getMonitor() {
+        return monitor;
+    }
+
+    public Administrador getAdministrador() {
+        return administrador;
     }
 
     public void setLogin(String login) {
@@ -137,11 +178,24 @@ public class Usuario{
         this.bloqueado = bloqueado;
     }
 
-    public void setId_carrera(int id_carrera) {
-        this.id_carrera = id_carrera;
+    public void setCarrera(Carrera carrera) {
+        this.carrera = carrera;
     }
-    
-    
-    
-    
+
+    public void setPreguntas(List<Pregunta> preguntas) {
+        this.preguntas = preguntas;
+    }
+
+    public void setRespuestas(List<Respuesta> respuestas) {
+        this.respuestas = respuestas;
+    }
+
+    public void setMonitor(Monitor monitor) {
+        this.monitor = monitor;
+    }
+
+    public void setAdministrador(Administrador administrador) {
+        this.administrador = administrador;
+    }
+
 }

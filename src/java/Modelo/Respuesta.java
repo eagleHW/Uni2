@@ -6,11 +6,15 @@
 
 package Modelo;
 
+import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -21,7 +25,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="Respuesta")
-public class Respuesta {
+public class Respuesta implements Serializable {
     
     @Id @Column(name="IDRespuesta")
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -36,12 +40,17 @@ public class Respuesta {
     @Column(name="Reportada")
     private int reportada;
     
-    @Column(name="UsuarioNombre_usuario")
-    private String login;
+    @ManyToOne
+    @JoinColumn(name="UsuarioNombre_usuario")
+    private Usuario login;
     
-    @Column(name="PreguntaIDPregunta")
-    private int id_pregunta;
+    @ManyToOne
+    @JoinColumn(name="PreguntaIDPregunta")
+    private Pregunta id_pregunta;
 
+    @OneToOne(mappedBy="id_respuesta_satisfactoria")
+    private Pregunta pregunta;
+    
     public int getId_respuesta() {
         return id_respuesta;
     }
@@ -58,12 +67,16 @@ public class Respuesta {
         return reportada;
     }
 
-    public String getLogin() {
+    public Usuario getLogin() {
         return login;
     }
 
-    public int getId_pregunta() {
+    public Pregunta getId_pregunta() {
         return id_pregunta;
+    }
+
+    public Pregunta getPregunta() {
+        return pregunta;
     }
 
     public void setId_respuesta(int id_respuesta) {
@@ -82,13 +95,16 @@ public class Respuesta {
         this.reportada = reportada;
     }
 
-    public void setLogin(String login) {
+    public void setLogin(Usuario login) {
         this.login = login;
     }
 
-    public void setId_pregunta(int id_pregunta) {
+    public void setId_pregunta(Pregunta id_pregunta) {
         this.id_pregunta = id_pregunta;
     }
-    
-    
+
+    public void setPregunta(Pregunta pregunta) {
+        this.pregunta = pregunta;
+    }
+
 }

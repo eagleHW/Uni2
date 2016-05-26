@@ -6,11 +6,14 @@
 
 package Modelo;
 
+import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -19,7 +22,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="Administrador")
-public class Administrador {
+public class Administrador implements Serializable {
  
     @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="IDAdmon")
@@ -28,8 +31,9 @@ public class Administrador {
     @Column(name="Rol")
     private String rol;
     
-    @Column(name="UsuarioNombre_usuario")
-    private String login;
+    @OneToOne
+    @JoinColumn(name="UsuarioNombre_usuario")
+    private Usuario login;
 
     public int getId_administrador() {
         return id_administrador;
@@ -39,7 +43,7 @@ public class Administrador {
         return rol;
     }
 
-    public String getLogin() {
+    public Usuario getLogin() {
         return login;
     }
 
@@ -51,14 +55,8 @@ public class Administrador {
         this.rol = rol;
     }
 
-    public void setLogin(String login) {
+    public void setLogin(Usuario login) {
         this.login = login;
     }
-    
-    
-    
-    
-    
-    
-    
+
 }

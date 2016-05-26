@@ -1,0 +1,71 @@
+body{
+    font-family: arial;
+    margin: 0 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
+
+#titulo{
+	display: inline;
+	font-size: 32px;
+	margin-left: 15% ;
+	font-weight: bold;
+}
+
+#formulario{
+	display: block;
+	margin: 1% 15%;
+	border: 2px black solid;
+	border-radius: 10px;
+	padding-top: 1%;
+}
+
+#formulario label, #formulario input, #formulario select{
+	height: 25px;
+	font-size: 15px;
+}
+
+#pregunta{
+	margin: 0% auto;
+	width: 100%;
+}
+
+#pregunta label, #pregunta input, #pregunta textarea{
+	display: inline-block;
+	width: 80%;
+}
+
+#pregunta input, #pregunta textarea{
+	margin: 0.5% 0% 0% 10%;
+}
+
+#pregunta label{
+	margin: 1% 0% 0% 10%;
+}
+
+#pregunta_tag{
+	margin: 1% auto 3% auto;
+	width: 100%;
+}
+
+#pregunta_tag label{
+	display: inline-block;
+	margin-left: 10%;
+	padding-right: .5%;
+
+} 
+
+#pregunta_tag select{
+	display: inline-block;
+	margin-right: 10%; 
+}
+
+#formulario button{
+	display: block;
+	margin: 0% auto 3% auto;
+	padding: 15px 5px;
+	font-size: 16px;
+	height: 25px;
+	line-height: 0px; 
+}

@@ -21,19 +21,20 @@
     <property name="dataSource" ref="dataSource"/>
     <property name="annotatedClasses">
         <list>
-            <value>Modelo.Usuario</value>
             <value>Modelo.Administrador</value>
+            <value>Modelo.Calificacion</value>
+            <value>Modelo.Carrera</value>
             <value>Modelo.Monitor</value>
             <value>Modelo.Pregunta</value>
             <value>Modelo.Respuesta</value>
-            <value>Modelo.Calificacion</value>
+            <value>Modelo.Usuario</value>
         </list>
     </property>
     <property name="hibernateProperties">
         <props>
             <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
-            <prop key="hibernate.show_sql">false</prop>
-            <prop key="hibernate.format_sql">false</prop>
+            <prop key="hibernate.show_sql">true</prop>
+            <prop key="hibernate.format_sql">true</prop>
         </props>
     </property>    
         
@@ -51,6 +52,10 @@
 </bean>
 
 <bean id="preguntaDAOImpl" class="DAO.PreguntaDAOImpl">
+    <property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory"/>
+</bean>
+
+<bean id="carreraDAOImpl" class="DAO.CarreraDAOImpl">
     <property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory"/>
 </bean>
 

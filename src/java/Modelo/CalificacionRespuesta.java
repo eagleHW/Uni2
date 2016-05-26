@@ -6,6 +6,7 @@
 
 package Modelo;
 
+import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.EmbeddedId;
@@ -17,16 +18,16 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="Calificacion_Respuesta")
-public class CalificacionRespuesta {
+public class CalificacionRespuesta implements Serializable {
     
     @EmbeddedId
-    private CalificacionRespuestaPK pk;
+    private CalificacionRespuestaPK calificacion_respuesta_pk;
     
     @Column(name="UsuarioNombre_usuario")
     private String login;
 
     public CalificacionRespuestaPK getPk() {
-        return pk;
+        return calificacion_respuesta_pk;
     }
 
     public String getLogin() {
@@ -34,7 +35,7 @@ public class CalificacionRespuesta {
     }
 
     public void setPk(CalificacionRespuestaPK pk) {
-        this.pk = pk;
+        this.calificacion_respuesta_pk = pk;
     }
 
     public void setLogin(String login) {
@@ -43,7 +44,7 @@ public class CalificacionRespuesta {
 
     
     @Embeddable
-    public class CalificacionRespuestaPK{
+    public class CalificacionRespuestaPK implements Serializable{
 
         @Column(name="CalificacionIDCalificacion")
         private int id_calificacion;

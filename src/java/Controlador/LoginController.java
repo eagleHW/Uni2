@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class LoginController implements BeanFactoryAware {
@@ -24,16 +25,14 @@ public class LoginController implements BeanFactoryAware {
     private UsuarioDAOImpl usuarioDAOImpl;
     
    @RequestMapping(value = "/")
-   public String index(){
-       //return new ModelAndView("index", "command", new Login());
-       return "index";
+   public String inicioSesion(){
+       return "inicioSesion";
    }
    
     @RequestMapping(value = "/home")
-    public String home(HttpSession sesion, ModelMap model) {
-             
-      model.addAttribute("login", sesion.getAttribute("login"));
-      return "home";
+    public ModelAndView home(HttpSession sesion, ModelMap model) { 
+      model.addAttribute("login", (String)sesion.getAttribute("login"));
+      return new ModelAndView("home",model);
     }
 
    
@@ -41,7 +40,7 @@ public class LoginController implements BeanFactoryAware {
     public String login(ModelMap model,HttpServletRequest request){
        
         String login = request.getParameter("login"); 
-        String password = request.getParameter("password");
+        String password = request.getParameter("contrasena");
     
         boolean acceso = usuarioDAOImpl.login(login, password);
          
@@ -53,7 +52,7 @@ public class LoginController implements BeanFactoryAware {
        }else{
            
         model.addAttribute("error", "Login o contraseña incorrecta");
-        return "index";   
+        return "inicioSesion";   
            
        }
        

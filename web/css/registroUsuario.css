@@ -1,0 +1,110 @@
+body{
+    font-family: arial;
+    margin: 0 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    margin-bottom: 4%;
+}
+
+#titulo{
+    display: inline;
+    font-size: 32px;
+    margin-left: 25% ;
+    font-weight: bold;
+}
+
+#formulario{
+    display: block;
+    margin: 1% auto;
+    width: 50%;
+    border: 2px black solid;
+    border-radius: 10px;
+}
+
+hr{
+    margin: 0% 5% 2.5% 5%;
+    border: 0;
+    height: 1px;
+    background: #333;
+    background-image: linear-gradient(to right, #ccc, #333, #ccc);
+}
+
+#formulario input, #formulario label, #formulario select{
+    display: inline-block;
+    height: 30px;
+    font-size: 15px;
+}
+
+#datos_formulario{
+    display: block;
+    width: 100%;
+}
+
+#datos_formulario p{
+
+    text-align: center;
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 3%;
+}
+
+#datos_formulario input,#datos_formulario label, .mensaje_error{
+    margin-bottom: 1.5%;
+}
+
+#datos_formulario input, #datos_formulario select{
+    width: 58%;
+    margin-right: 10%;
+    margin-left: 0%;
+    /* Agregado por efectos indeseables al agregar los errores*/
+    color: black;
+    text-align: left;
+}
+
+#datos_formulario label{
+    width: 20%;
+    margin-left: 10%
+}
+
+#datos_formulario button{
+    display: block;
+    margin: 1% auto 3% auto;
+    padding: 15px 5px;
+    font-size: 16px;
+    height: 25px;
+    line-height: 0px; 
+}
+
+#privacidad{
+    margin: 1% auto 4% auto;
+    width: 70%;
+}
+
+#privacidad p{
+    display: block;
+    text-align: center;
+    margin: 0px 0px;
+}
+
+#formulario button{
+    display: block;
+    margin: 0% auto 3% auto;
+    padding: 15px 5px;
+    font-size: 16px;
+    height: 25px;
+    line-height: 0px; 
+}
+
+.error{
+    border-color: red;
+}
+
+.mensaje_error{
+    display: inline-block;
+    width: 58%;
+    font-size: 15px;
+    margin-left: 31%;
+    color: red;
+    text-align: center;
+}

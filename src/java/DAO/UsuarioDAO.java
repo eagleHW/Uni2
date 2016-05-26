@@ -15,7 +15,7 @@ import Modelo.Usuario;
  */
 public interface UsuarioDAO {
     
-    public void create(Usuario usuario);
+    public void create(Usuario usuario, int id_carrera);
     
     public void update(String login, String[] columnas, String[] valores);
  

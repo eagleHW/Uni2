@@ -1,0 +1,58 @@
+body{
+    font-family: arial;
+    margin: 0 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
+
+#titulo{
+    display: inline;
+    font-size: 32px;
+    margin-left: 35% ;
+    font-weight: bold;   
+}
+
+#formulario{
+    display: block;
+	width: 30%;
+	margin: 1% auto;
+	border: 2px black solid;
+	border-radius: 10px;
+
+}
+
+#formulario input, #formulario p{
+	display: block;
+	width: 75%;
+}
+	
+#formulario input{
+	height: 30px;
+	font-size: 16px;
+
+
+}
+
+#login{
+    margin: 8% auto 0% auto;
+}
+
+#contrasena{
+    margin: 1% auto;
+}
+
+#formulario button{
+    display: block;
+    margin: 5.5% auto 0% auto;
+    padding: 15px 5px;
+    font-size: 16px;
+    height: 25px;
+    line-height: 0px; 
+}
+
+#formulario p{
+    width: 100%;
+	margin: 5.5% auto 8% auto;
+	text-align: center;
+}

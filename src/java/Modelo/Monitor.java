@@ -6,11 +6,14 @@
 
 package Modelo;
 
+import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -19,7 +22,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="Monitor")
-public class Monitor {
+public class Monitor implements Serializable {
     
     @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="IDMonitor")
@@ -28,8 +31,9 @@ public class Monitor {
     @Column(name="Aceptado")
     private int aceptado;
     
-    @Column(name="UsuarioNombre_usuario")
-    private String login;
+    @OneToOne
+    @JoinColumn(name="UsuarioNombre_usuario")
+    private Usuario login;
 
     public int getId_monitor() {
         return id_monitor;
@@ -39,7 +43,7 @@ public class Monitor {
         return aceptado;
     }
 
-    public String getLogin() {
+    public Usuario getLogin() {
         return login;
     }
 
@@ -51,11 +55,8 @@ public class Monitor {
         this.aceptado = aceptado;
     }
 
-    public void setLogin(String login) {
+    public void setLogin(Usuario login) {
         this.login = login;
     }
-    
-    
-    
-    
+
 }

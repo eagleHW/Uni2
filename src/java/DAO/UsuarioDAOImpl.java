@@ -6,6 +6,7 @@
 
 package DAO;
 
+import Modelo.Carrera;
 import Modelo.Usuario;
 import java.math.BigInteger;
 import org.hibernate.Session;
@@ -26,9 +27,10 @@ public class UsuarioDAOImpl implements UsuarioDAO{
     }
 
     @Override
-    public void create(Usuario usuario) {
+    public void create(Usuario usuario, int id_carrera) {
         Session session = this.sessionFactory.openSession();
         Transaction tx = session.beginTransaction();
+        usuario.setCarrera((Carrera)session.load(Carrera.class, id_carrera));
         session.persist(usuario);
         tx.commit();
         session.close();
@@ -41,7 +43,7 @@ public class UsuarioDAOImpl implements UsuarioDAO{
         Transaction tx = session.beginTransaction();
         Usuario usuario = (Usuario)session.get(Usuario.class, login);
         int num_valor = 0;
-        
+                
         for (String columna : columnas) {
         
             switch(columna){
@@ -86,8 +88,8 @@ public class UsuarioDAOImpl implements UsuarioDAO{
                     usuario.setBloqueado(Integer.parseInt(valores[num_valor]));         
                     break;
                 
-                case "id_carrera":
-                     usuario.setId_carrera(Integer.parseInt(valores[num_valor]));       
+                case "id_carrera":                    
+                    usuario.setCarrera((Carrera)session.load(Carrera.class, Integer.parseInt(valores[num_valor])));    
                     break;
                 
                     
@@ -118,7 +120,7 @@ public class UsuarioDAOImpl implements UsuarioDAO{
         datos_usuario.setWhatsapp(usuario.getWhatsapp());
         datos_usuario.setRango(usuario.getRango());
         datos_usuario.setBloqueado(usuario.getBloqueado());
-        datos_usuario.setId_carrera(usuario.getId_carrera());
+        datos_usuario.setCarrera(usuario.getCarrera());
         
         session.update(datos_usuario);
         tx.commit();

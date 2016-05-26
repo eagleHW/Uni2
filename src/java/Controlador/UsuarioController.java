@@ -6,11 +6,9 @@
 
 package Controlador;
 
-import DAO.PreguntaDAOImpl;
+import DAO.CarreraDAOImpl;
 import DAO.UsuarioDAOImpl;
-import Modelo.Pregunta;
 import Modelo.Usuario;
-import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.BeansException;
@@ -20,40 +18,51 @@ import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
- *
+ *^[a-z]+([\s]*[a-z])*$
+ * 
+ * 
  * @author rae
  */
 @Controller
 public class UsuarioController implements BeanFactoryAware {
     
     private UsuarioDAOImpl usuarioDAOImpl;
-    private PreguntaDAOImpl preguntaDAOImpl;
+    private CarreraDAOImpl carreraDAOImpl;
     
-    @RequestMapping(value = "/registrarUsuario")
-    public ModelAndView registarUsuario() {
-      return new ModelAndView("registrarUsuario", "command", new Usuario());       
+    @RequestMapping(value = "/registroUsuario")
+    public ModelAndView registroUsuario(ModelMap model) {
+      
+        model.addAttribute("command",new Usuario());
+        model.addAttribute("carreras", carreraDAOImpl.getCarreras());
+                
+      return new ModelAndView("registroUsuario", model);       
     }
    
     @RequestMapping(value = "/guardarUsuario", method = RequestMethod.POST )
-    public String guardarUsuario(@ModelAttribute Usuario usuario, HttpServletRequest request){
+    public String guardarUsuario(Usuario usuario,HttpServletRequest request){
        
         String password;
         
         Md5PasswordEncoder encoderMD5 = new Md5PasswordEncoder();
         password = encoderMD5.encodePassword(usuario.getContraseña(),"aes2016-1");
-        
+      
+        // Se uso id_carrera y no carrera por que chocaba con el atributo carrera en Usuario
+        String id_carrera = request.getParameter("id_carrera");
+      
+         System.out.println("Antes -------------------------" + usuario.getLogin());
         usuario.setContraseña(password);
         usuario.setRango("nuevo");
         usuario.setBloqueado(0);
-        usuario.setId_carrera(1);
+        
+        usuarioDAOImpl.create(usuario, Integer.parseInt(id_carrera));
 
-        usuarioDAOImpl.create(usuario);
+        System.out.println("Despues -------------------------" + usuario.getLogin());
         
         request.getSession(true).setAttribute("login", usuario.getLogin());
         
@@ -68,65 +77,57 @@ public class UsuarioController implements BeanFactoryAware {
       model.addAttribute("nombre", usuario.getNombre());
       model.addAttribute("apellido_paterno", usuario.getApellido_paterno());
       model.addAttribute("apellido_materno", usuario.getApellido_materno());
-      model.addAttribute("contraseña", usuario.getContraseña());
       model.addAttribute("correo", usuario.getCorreo());
       model.addAttribute("facebook", usuario.getFacebook());
       model.addAttribute("whatsapp", usuario.getWhatsapp());
+      
+      model.addAttribute("id_carrera", usuario.getCarrera().getId_carrera());    
+      model.addAttribute("carreras", carreraDAOImpl.getCarreras());
       
       return new ModelAndView("perfilUsuario", "command", new Usuario());       
     }
     
     @RequestMapping(value = "/guardarCambiosUsuario", method = RequestMethod.POST )
-    public String guardarModificacionUsuario(@ModelAttribute Usuario usuario, HttpSession sesion){
+    @ResponseBody
+    public String guardarModificacionUsuario(@ModelAttribute Usuario usuario, HttpServletRequest request ,HttpSession sesion){
     
-        String[] columnas = {"nombre","apellido_paterno","apellido_materno","contraseña","correo","facebook","whatsapp" };
-        String[] valores = {usuario.getNombre(),usuario.getApellido_paterno(), usuario.getApellido_materno(),
-                usuario.getContraseña(),usuario.getCorreo(),usuario.getFacebook(), usuario.getWhatsapp().toString()};
+        String[] columnas = {"nombre","apellido_paterno","apellido_materno","id_carrera","correo","facebook","whatsapp" };
+        String[] valores = {usuario.getNombre(),usuario.getApellido_paterno(),usuario.getApellido_materno(), 
+            request.getParameter("id_carrera") , usuario.getCorreo(),usuario.getFacebook(), usuario.getWhatsapp().toString()};
         
         usuarioDAOImpl.update((String)sesion.getAttribute("login"), columnas, valores);
         
-        return "redirect:perfilUsuario";
+        return "ok";
     }
-    
-    @RequestMapping(value = "/realizarPregunta")
-    public ModelAndView realizarPregunta(){
-        return new ModelAndView("realizarPregunta","command",new Pregunta());
+
+    @RequestMapping(value = "/guardarCambiosContrasena", method = RequestMethod.POST )
+    @ResponseBody
+    public String guardaModificacionContraseña(HttpServletRequest request ,HttpSession sesion){
+     
+        boolean contraseña_correcta = usuarioDAOImpl.login((String)sesion.getAttribute("login"), 
+                                            request.getParameter("contrasena_anterior"));
         
+        if(contraseña_correcta){
+            String password;
+            Md5PasswordEncoder encoderMD5 = new Md5PasswordEncoder();
+            password = encoderMD5.encodePassword(request.getParameter("contrasena_nueva"),"aes2016-1");
+
+            String[] columnas = {"contraseña"};
+            String[] valores = {password};
+
+            usuarioDAOImpl.update((String)sesion.getAttribute("login"), columnas, valores);
+
+            return "ok";
+        }
+        
+        return "error";
     }
-    
-    @RequestMapping(value="/guardarPregunta", method = RequestMethod.POST )
-    public String guardarPregunta(@ModelAttribute Pregunta pregunta, HttpSession sesion){
-        
-        pregunta.setLogin((String)sesion.getAttribute("login"));
-        pregunta.setFecha(new Date());
-        pregunta.setDesactivada(0);
-        pregunta.setReportada(0);
-        pregunta.setRevisada(0);
-        pregunta.setId_respuesta_satisfactoria(0);
-        pregunta.setCarrera(1);
-        
-        preguntaDAOImpl.create(pregunta);
-        
-        return "redirect:mostrarPregunta/" + pregunta.getId_pregunta();
-    }
-    
-    
-    @RequestMapping(value="/mostrarPregunta/{id}")
-    public String mostrarPregunta(@PathVariable("id") int pregunta_id, ModelMap model){
-    
-        Pregunta pregunta = preguntaDAOImpl.get(pregunta_id);
-        
-        model.addAttribute("titulo", pregunta.getTitulo());
-        model.addAttribute("descripcion", pregunta.getDescripcion());
-        
-        return "mostrarPregunta";
-    }
-    
+   
     
    @Override
     public void setBeanFactory(BeanFactory context) throws BeansException {
       usuarioDAOImpl = (UsuarioDAOImpl)context.getBean("usuarioDAOImpl");
-      preguntaDAOImpl = (PreguntaDAOImpl) context.getBean("preguntaDAOImpl");
+      carreraDAOImpl = (CarreraDAOImpl) context.getBean("carreraDAOImpl");
     }    
 
     

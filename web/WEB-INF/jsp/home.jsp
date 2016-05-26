@@ -1,20 +1,43 @@
-<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
+<!DOCTYPE HTML>
 <html>
-<head>
-    <title>Home</title>
-</head>
-<body>
+    <head>
 
-<h2>Bienvenido</h2>
-   <table>
-    <tr>
-        <td>Login</td>
-        <td><a href='<c:url value='/perfilUsuario'/>'>${login}</a></td>
-    </tr>
-</table>  
- <a href='<c:url value='/logout'/>'>Logout</a>    
- <a href='<c:url value='/realizarPregunta'/>'>Realizar Pregunta</a>  
-</body>
-</html
+	<title>Home</title>
+	<meta charset="UTF-8">
+	<link rel="icon" href=" <c:url value="/imagenes/foco.png"/> "/>
+        <link rel="stylesheet" type="text/css" href=" <c:url value="/css/navegacion.css" /> ">
+	<link rel="stylesheet" type="text/css" href=" <c:url value="/css/home.css" /> ">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.3/jquery.min.js"></script>
+        <script src=" <c:url value="/js/home_pregunta.js" /> "></script>
+    </head>
+    <body>
+
+	<nav>
+		
+            <div>
+                <p>Bienvenido : <a href=" <c:url value="/perfilUsuario"/> ">${login}</a> | <a href=" <c:url value="/logout"/> ">Logout</a> </p>
+            </div>
+                <a href=" <c:url value="/home"/> "><img src=" <c:url value="/imagenes/uni2.png"/> "></a>
+
+                <ul>
+                    <li><a href=" <c:url value="/publicarPregunta"/> ">Publicar Pregunta</a></li>
+        	    <li><a href="">Buscar Pregunta</a></li>
+		    <li><a href="">Ver Perfil</a></li>
+                </ul>
+
+            </nav>
+
+            <div id="preguntas">
+            <!--En este div se insertaran las preguntas--> 
+            </div>
+            
+            <div id="navegacion_preguntas">
+                <button id="regresar" type="button" onclick="regresar()">Regresar</button>
+                <button id="seguir" type="button" onclick="seguir()">Seguir</button>
+            </div>    
+
+                    
+	</body>
+</html>

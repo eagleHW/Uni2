@@ -5,12 +5,20 @@
  */
 package Modelo;
 
+import java.io.Serializable;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -19,7 +27,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "Pregunta")
-public class Pregunta {
+public class Pregunta implements Serializable {
 
    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
    @Column(name = "IDPregunta")
@@ -43,14 +51,20 @@ public class Pregunta {
     @Column(name = "Revisada")
     private int revisada;
 
-    @Column(name = "SatisfactoriaIDrespuesta")
-    private int id_respuesta_satisfactoria;
+    @OneToOne
+    @JoinColumn(name = "SatisfactoriaIDrespuesta")
+    private Respuesta id_respuesta_satisfactoria;
 
-    @Column(name = "UsuarioNombre_usuario")
-    private String login;
+    @ManyToOne
+    @JoinColumn(name = "UsuarioNombre_usuario")
+    private Usuario login;
 
-    @Column(name = "CarreraIDCarrera")
-    private int carrera;
+    @ManyToOne
+    @JoinColumn(name = "CarreraIDCarrera")
+    private Carrera carrera;
+
+    @OneToMany(mappedBy="id_pregunta")
+    private List<Respuesta> respuestas = new LinkedList();
 
     public int getId_pregunta() {
         return id_pregunta;
@@ -80,16 +94,20 @@ public class Pregunta {
         return revisada;
     }
 
-    public int getId_respuesta_satisfactoria() {
+    public Respuesta getId_respuesta_satisfactoria() {
         return id_respuesta_satisfactoria;
     }
 
-    public String getLogin() {
+    public Usuario getLogin() {
         return login;
     }
 
-    public int getCarrera() {
+    public Carrera getCarrera() {
         return carrera;
+    }
+
+    public List<Respuesta> getRespuestas() {
+        return respuestas;
     }
 
     public void setId_pregunta(int id_pregunta) {
@@ -120,18 +138,20 @@ public class Pregunta {
         this.revisada = revisada;
     }
 
-    public void setId_respuesta_satisfactoria(int id_respuesta_satisfactoria) {
+    public void setId_respuesta_satisfactoria(Respuesta id_respuesta_satisfactoria) {
         this.id_respuesta_satisfactoria = id_respuesta_satisfactoria;
     }
 
-    public void setLogin(String login) {
+    public void setLogin(Usuario login) {
         this.login = login;
     }
 
-    public void setCarrera(int carrera) {
+    public void setCarrera(Carrera carrera) {
         this.carrera = carrera;
     }
-    
-    
 
+    public void setRespuestas(List<Respuesta> respuestas) {
+        this.respuestas = respuestas;
+    }
+    
 }
