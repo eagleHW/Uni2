@@ -4,7 +4,6 @@
 <!DOCTYPE HTML>
 <html>
     <head>
-
         <title>Perfil de Usuario</title>
         <meta charset="UTF-8">
         <link rel="icon" href=" <c:url value="/imagenes/foco.png"/> "/>
@@ -26,8 +25,8 @@
             
             <ul>
                 <li><a href=" <c:url value="/publicarPregunta"/> ">Publicar Pregunta</a></li>
-                <li><a href="">Buscar Pregunta</a></li>
-                <li><a href="">Ver Perfil</a></li>
+                <li><a href=" <c:url value="/buscarPregunta"/> ">Buscar Pregunta</a></li>
+                <li><a href=" <c:url value="/perfilUsuario"/> ">Ver Perfil</a></li>
             </ul>
 
         </nav>
@@ -52,7 +51,7 @@
                     <form:input path="correo" type="text" id="correo" value="${correo}" onclick="limpiaCorreo()"/>
                     <div id="validacion_correo" class="mensaje_error"></div>
                     <form:label path="facebook" for="facebook">Facebook </form:label>
-                    <form:input path="facebook" type="text" id="facebook" value="${facebook}" onclick="limpiaFacebook()"/>
+                    <form:input path="facebook" type="text" id="facebook" value="${facebook}" placeholder=" Ej. https://www.facebook.com/[ nombre usuario ]" onclick="limpiaFacebook()"/>
                     <div id="validacion_facebook" class="mensaje_error"></div>
                     <form:label path="whatsapp" for="whatsapp">Whats app </form:label>
                     <form:input path="whatsapp" type="text" id="whatsapp" value="${whatsapp}" onclick="limpiaWhatsapp()"/>

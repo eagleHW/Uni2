@@ -19,6 +19,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 /**
@@ -64,6 +65,7 @@ public class Pregunta implements Serializable {
     private Carrera carrera;
 
     @OneToMany(mappedBy="id_pregunta")
+    @OrderBy("id_respuesta")
     private List<Respuesta> respuestas = new LinkedList();
 
     public int getId_pregunta() {

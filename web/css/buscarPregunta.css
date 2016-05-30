@@ -1,0 +1,64 @@
+body{
+    font-family: arial;
+    margin: 0 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    margin-bottom: 5%;
+}
+
+aside, #preguntas{
+    display: inline-block;
+    vertical-align: top;
+}
+
+aside{
+    width: 22%;
+    margin-left: 1.5%;
+    margin-top: 0%;
+    border-right: 1px solid black;
+    position: fixed;
+}
+
+aside p{
+    font-size: 20px;
+    font-weight: bold; 
+    margin-top: 0px;  
+}
+
+aside input, aside select{
+    display: block;
+    margin-bottom: 2%;
+    height: 25px;
+    font-size: 15px;
+}
+
+aside label{
+    display: block;
+    height: 25px;
+    font-size: 15px;   
+}
+
+aside input, aside select, aside label{
+    width: 95%;
+}
+
+#preguntas{
+    width: 70%;   
+    margin: 0% 3% 0% 26.5%;
+}
+
+button{
+    display: block;
+    margin: 5% auto 0% auto;
+    padding: 15px 20px;
+    font-size: 16px;
+    height: 25px;
+    line-height: 0px; 
+}
+
+aside img{
+    margin: 5% auto 0% auto;
+    display: block;
+    width: 50%;
+}

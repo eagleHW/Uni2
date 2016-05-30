@@ -10,6 +10,8 @@
     <link rel="icon" href=" <c:url value="/imagenes/foco.png"/> "/>
     <link rel="stylesheet" type="text/css" href=" <c:url value="/css/navegacion.css" /> ">
     <link rel="stylesheet" type="text/css" href=" <c:url value="/css/publicarPregunta.css" /> ">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.3/jquery.min.js"></script>
+    <script src=" <c:url value="/js/publicarPregunta.js" /> "></script>
 </head>
 <body>
 
@@ -23,22 +25,24 @@
 
         <ul>
             <li><a href=" <c:url value="/publicarPregunta"/> ">Publicar Pregunta</a></li>
-            <li><a href="">Buscar Pregunta</a></li>
-	    <li><a href="">Ver Perfil</a></li>
+            <li><a href=" <c:url value="/buscarPregunta"/> ">Buscar Pregunta</a></li>
+	    <li><a href=" <c:url value="/perfilUsuario"/> ">Ver Perfil</a></li>
         </ul>
 
     </nav>
     
     <p id="titulo">Publicar pregunta</p>
     
-    <form:form method="POST" action="/Uni2/guardarPregunta">
+    <form:form method="POST" action="/Uni2/guardarPregunta" onsubmit="return valida()">
         <div id="formulario">
 
             <div id="pregunta">
                 <form:label path="titulo" for="titulo_pregunta">Título</form:label>
-                <form:input path="titulo" type="text" id="titulo_pregunta"/>
+                <form:input path="titulo" type="text" id="titulo_pregunta" onclick="limpiaTitulo()"/>
+                <div id="validacion_titulo" class="mensaje_error"></div>
                 <form:label path="descripcion" for="descripcion">Descripción</form:label>
-                <form:textarea path="descripcion" id="descripcion" cols="30" rows="10"></form:textarea>
+                <form:textarea path="descripcion" id="descripcion" cols="30" rows="10" onclick="limpiaDescripcion()"></form:textarea>
+                <div id="validacion_descripcion" class="mensaje_error"></div>
             </div>
 
             <div id="pregunta_tag">
@@ -50,7 +54,7 @@
                 </select>
             </div>
 
-            <button>Publicar pregunta</button>
+            <button type="submit">Publicar pregunta</button>
     
         </div>
     </form:form>    

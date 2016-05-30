@@ -24,6 +24,7 @@
 
                 <input id="login" name="login" type="text" placeholder=" Login"> <br>
                 <input id="contrasena" name="contrasena" type="password" placeholder=" Contraseña">
+                <span>${error}</span>
                 <button>Iniciar Sesión</button>
                 <p>¿Aún no eres parte de la comunidad?, <a href="<c:url value='/registroUsuario'/>">regístrate</a> .</p>
 

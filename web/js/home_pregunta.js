@@ -7,7 +7,7 @@ function obtenPreguntas() {
 
     $.ajax({
         type: "GET",
-        url:  "mostrarPreguntas/"+init_index_pregunta,
+        url:  "mostrarPreguntas?index="+init_index_pregunta,
         success: function(response) {
             $("#preguntas").html( response );
         }
@@ -22,7 +22,10 @@ function seguir(){
 }
 
 function regresar(){
-    init_index_pregunta -= 1;
-    obtenPreguntas();
+   
+    if(init_index_pregunta > 0){
+        init_index_pregunta -= 1;
+        obtenPreguntas(); 
+    }  
     
 }

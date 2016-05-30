@@ -8,6 +8,7 @@ package Controlador;
 
 import DAO.UsuarioDAOImpl;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
@@ -30,9 +31,15 @@ public class LoginController implements BeanFactoryAware {
    }
    
     @RequestMapping(value = "/home")
-    public ModelAndView home(HttpSession sesion, ModelMap model) { 
+    public ModelAndView home(HttpSession sesion, ModelMap model, HttpServletResponse response) { 
+      
+      if(sesion.getAttribute("login") == null){
+          return new ModelAndView("inicioSesion");
+      }
+             
       model.addAttribute("login", (String)sesion.getAttribute("login"));
       return new ModelAndView("home",model);
+   
     }
 
    
@@ -46,7 +53,7 @@ public class LoginController implements BeanFactoryAware {
          
        if(acceso){
            
-        request.getSession(true).setAttribute("login", login);
+        request.getSession().setAttribute("login", login);
         return "redirect:home";
 
        }else{

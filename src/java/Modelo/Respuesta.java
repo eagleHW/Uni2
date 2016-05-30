@@ -7,6 +7,7 @@
 package Modelo;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -28,11 +29,14 @@ import javax.persistence.Table;
 public class Respuesta implements Serializable {
     
     @Id @Column(name="IDRespuesta")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id_respuesta;
     
     @Column(name="Descripcion")
     private String descripcion;
+    
+    @Column(name = "Fecha")
+    private Date fecha;
     
     @Column(name="Evaluacion")
     private int evaluacion;
@@ -49,7 +53,7 @@ public class Respuesta implements Serializable {
     private Pregunta id_pregunta;
 
     @OneToOne(mappedBy="id_respuesta_satisfactoria")
-    private Pregunta pregunta;
+    private Pregunta id_pregunta_satisfactoria;
     
     public int getId_respuesta() {
         return id_respuesta;
@@ -57,6 +61,10 @@ public class Respuesta implements Serializable {
 
     public String getDescripcion() {
         return descripcion;
+    }
+
+    public Date getFecha() {
+        return fecha;
     }
 
     public int getEvaluacion() {
@@ -75,16 +83,21 @@ public class Respuesta implements Serializable {
         return id_pregunta;
     }
 
-    public Pregunta getPregunta() {
-        return pregunta;
+    public Pregunta getId_pregunta_satisfactoria() {
+        return id_pregunta_satisfactoria;
     }
 
+    
     public void setId_respuesta(int id_respuesta) {
         this.id_respuesta = id_respuesta;
     }
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
     }
 
     public void setEvaluacion(int evaluacion) {
@@ -103,8 +116,8 @@ public class Respuesta implements Serializable {
         this.id_pregunta = id_pregunta;
     }
 
-    public void setPregunta(Pregunta pregunta) {
-        this.pregunta = pregunta;
+    public void setId_pregunta_satisfactoria(Pregunta id_pregunta_satisfactoria) {
+        this.id_pregunta_satisfactoria = id_pregunta_satisfactoria;
     }
 
 }

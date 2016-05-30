@@ -36,8 +36,8 @@ public class UsuarioController implements BeanFactoryAware {
     private CarreraDAOImpl carreraDAOImpl;
     
     @RequestMapping(value = "/registroUsuario")
-    public ModelAndView registroUsuario(ModelMap model) {
-      
+    public ModelAndView registroUsuario(ModelMap model, HttpSession sesion) {
+              
         model.addAttribute("command",new Usuario());
         model.addAttribute("carreras", carreraDAOImpl.getCarreras());
                 
@@ -45,8 +45,8 @@ public class UsuarioController implements BeanFactoryAware {
     }
    
     @RequestMapping(value = "/guardarUsuario", method = RequestMethod.POST )
-    public String guardarUsuario(Usuario usuario,HttpServletRequest request){
-       
+    public String guardarUsuario(Usuario usuario,HttpServletRequest request, HttpSession sesion){
+               
         String password;
         
         Md5PasswordEncoder encoderMD5 = new Md5PasswordEncoder();
@@ -71,6 +71,10 @@ public class UsuarioController implements BeanFactoryAware {
     
     @RequestMapping(value = "/perfilUsuario")
     public ModelAndView perfilUsuario(ModelMap model, HttpSession sesion) {
+      
+        if(sesion.getAttribute("login") == null){
+          return new ModelAndView("inicioSesion");
+        } 
         
       Usuario usuario = usuarioDAOImpl.get((String)sesion.getAttribute("login"));
         
@@ -91,6 +95,10 @@ public class UsuarioController implements BeanFactoryAware {
     @ResponseBody
     public String guardarModificacionUsuario(@ModelAttribute Usuario usuario, HttpServletRequest request ,HttpSession sesion){
     
+        if(sesion.getAttribute("login") == null){
+          return "Acceso Denegado";
+        } 
+        
         String[] columnas = {"nombre","apellido_paterno","apellido_materno","id_carrera","correo","facebook","whatsapp" };
         String[] valores = {usuario.getNombre(),usuario.getApellido_paterno(),usuario.getApellido_materno(), 
             request.getParameter("id_carrera") , usuario.getCorreo(),usuario.getFacebook(), usuario.getWhatsapp().toString()};
@@ -104,6 +112,10 @@ public class UsuarioController implements BeanFactoryAware {
     @ResponseBody
     public String guardaModificacionContraseña(HttpServletRequest request ,HttpSession sesion){
      
+        if(sesion.getAttribute("login") == null){
+          return "Acceso Denegado";
+        }
+        
         boolean contraseña_correcta = usuarioDAOImpl.login((String)sesion.getAttribute("login"), 
                                             request.getParameter("contrasena_anterior"));
         
